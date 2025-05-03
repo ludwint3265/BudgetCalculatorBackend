@@ -1,24 +1,30 @@
 from google import genai
 from google.genai import types
-import getBudgetInfo as bi
-import privconfig as p
+from dotenv import load_dotenv
+import os
 
-def main():
-   client = genai.Client(api_key=p.API_Key)
+# loading the key from the .env file instead of the privconfig.py
+load_dotenv()
 
-   if (bi.catValid == True and bi.budgetValid == True):
-      price = str(bi.budget_value)
-      area = bi.category
-      response = client.models.generate_content(
-         model="gemini-2.0-flash", 
-         config=types.GenerateContentConfig(
-            system_instruction="You are a financial advisor, who wants to help people plan out how they can spend their budget, given a dollar amount and category/area they would like to spend it on. Do leave the disclaimer, but try to keep it as consise as possible."),
+def get_response(budget, category):
+    api_key = os.getenv("GEMINI_API_KEY")
+    
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY not found in environment variables.")
 
-         contents="What are three ways I can spend a budget of " + price + " on " + area + ", in a way that will stay within my means of living?"
-      )
-      print(response.text)
-   else:
-      print("Your entered category or price was not valid. Please try again.")
+    client = genai.Client(api_key=api_key)
 
-if __name__ == "__main__":
-   main()
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        config=types.GenerateContentConfig(
+            system_instruction="You're a helpful financial advisor. Suggest 3 concise, practical ways to spend a given budget in a chosen category."
+        ),
+        contents=f"What are three ways I can spend ${budget} on {category} while staying within my means?"
+    )
+
+    return response.text
+
+
+
+
+
