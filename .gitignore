@@ -1,1 +1,4 @@
+.env
 privconfig.py
+__pycache__/
+*.pyc
