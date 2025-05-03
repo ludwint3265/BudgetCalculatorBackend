@@ -2,17 +2,23 @@ import sys
 
 #need a way to sanitize user input before actually sending to AI
 #this step in the actual program will be pure user input, which will 
-
 catValid = False
 budgetValid = False
+budgetValue = 0
+category = ""
 def main():
+   global catValid, budgetValid, budgetValue, category, budget_value
    budget = input("Tell us your budget - we'll show you smart, personalized ideas powered by AI" )
    try:
       budget_value = float(budget)
-      budgetValid = True
+      if budget_value > 0:
+         budgetValid = True
+      else:
+         print("Please enter a budget greater than 0.")
+         return
    except ValueError:
       print("This is not a valid budget price. Please enter a non-zero dollar amount, without '$' or any other characters.")
-      sys.exit()
+      return
    
    #...santization/checking... before getting sent to AI
 
