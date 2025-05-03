@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from userInputRunner import run_pipeline
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/get-suggestions", methods=["POST"])
 def get_suggestions():
