@@ -1,27 +1,17 @@
 
 
-def validate_budget_and_category(budget_str, category_str):
+def validate_user_input(budget_str, category_str, location_str):
     try:
         budget = float(budget_str)
-        if budget <= 0:
-            return None, "Budget must be greater than 0"
+        if budget < 0:
+            return None, "Budget must be greater than or equal to 0"
     except ValueError:
         return None, "Invalid budget format"
 
-    catDict = {
-        "Travel": 1,
-        "Food": 2,
-        "Education / Courses": 3,
-        "Housing / Rent Rate": 4,
-        "Save & Grow It": 5,
-        "Fitness and Wellness": 6,
-        "Social Impact & Charity": 7,
-        "Entertainment": 8,
-        "Emergency Fund": 9,
-        "Subscriptions and Memberships": 10
-    }
-
-    if category_str not in catDict:
+    if not category_str.strip():
         return None, "Invalid category"
 
-    return {"budget": budget, "category": category_str}, None
+    if not location_str.strip():
+        return None, "Invalid location"
+
+    return {"budget": budget, "category": category_str, "location": location_str}, None
