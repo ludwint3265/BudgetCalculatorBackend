@@ -23,7 +23,14 @@ def get_gemini_suggestions(budget_info):
 
     raw_text = response.text.strip().replace('**', '').replace('\n', ' ')
 
-    parts = re.split(r'\s*\d\.\s+', raw_text)
-    suggestions = [part.strip() for part in parts if part.strip()]
+    # splitting at the backtick
+    raw_parts = raw_text.split('`')  
 
+    suggestions = [] 
+
+    #iterates through raw_parts and removes any extra spaces from the beginning and end and then lists it one by one. 
+    for part in raw_parts:
+        cleaned = part.strip()  
+        if cleaned != "":      
+            suggestions.append(cleaned)
     return suggestions
