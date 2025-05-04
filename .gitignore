@@ -1,2 +1,4 @@
-privconfig.py
 .env
+privconfig.py
+__pycache__/
+*.pyc
