@@ -2,6 +2,7 @@ from google import genai
 from google.genai import types
 import os
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 
@@ -20,4 +21,9 @@ def get_gemini_suggestions(budget_info):
 
     )
 
-    return response.text
+    raw_text = response.text.strip().replace('**', '').replace('\n', ' ')
+
+    parts = re.split(r'\s*\d\.\s+', raw_text)
+    suggestions = [part.strip() for part in parts if part.strip()]
+
+    return suggestions
